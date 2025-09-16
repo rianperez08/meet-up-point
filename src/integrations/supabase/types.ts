@@ -14,16 +14,151 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      midpoint_calculations: {
+        Row: {
+          calculated_at: string
+          id: string
+          midpoint_latitude: number
+          midpoint_longitude: number
+          session_id: string
+        }
+        Insert: {
+          calculated_at?: string
+          id?: string
+          midpoint_latitude: number
+          midpoint_longitude: number
+          session_id: string
+        }
+        Update: {
+          calculated_at?: string
+          id?: string
+          midpoint_latitude?: number
+          midpoint_longitude?: number
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "midpoint_calculations_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          email: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      session_participants: {
+        Row: {
+          address: string | null
+          id: string
+          joined_at: string
+          latitude: number | null
+          longitude: number | null
+          session_id: string
+          user_id: string
+        }
+        Insert: {
+          address?: string | null
+          id?: string
+          joined_at?: string
+          latitude?: number | null
+          longitude?: number | null
+          session_id: string
+          user_id: string
+        }
+        Update: {
+          address?: string | null
+          id?: string
+          joined_at?: string
+          latitude?: number | null
+          longitude?: number | null
+          session_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "session_participants_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sessions: {
+        Row: {
+          created_at: string
+          created_by: string
+          id: string
+          invite_code: string
+          max_participants: number
+          name: string
+          status: Database["public"]["Enums"]["session_status"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          id?: string
+          invite_code: string
+          max_participants?: number
+          name: string
+          status?: Database["public"]["Enums"]["session_status"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          id?: string
+          invite_code?: string
+          max_participants?: number
+          name?: string
+          status?: Database["public"]["Enums"]["session_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_invite_code: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
     }
     Enums: {
-      [_ in never]: never
+      session_status: "active" | "completed" | "cancelled"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +285,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      session_status: ["active", "completed", "cancelled"],
+    },
   },
 } as const
