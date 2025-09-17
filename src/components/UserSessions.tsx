@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import { Users, Calendar, MapPin } from "lucide-react";
+import { Calendar, MapPin } from "lucide-react";
 
 interface Session {
   id: string;
@@ -14,7 +14,6 @@ interface Session {
   status: string;
   created_at: string;
   created_by: string;
-  session_participants: { count: number }[];
 }
 
 export const UserSessions = () => {
@@ -33,10 +32,7 @@ export const UserSessions = () => {
     try {
       const { data, error } = await supabase
         .from('sessions')
-        .select(`
-          *,
-          session_participants(count)
-        `)
+        .select('*')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -84,10 +80,6 @@ export const UserSessions = () => {
                 </Badge>
               </div>
               <CardDescription className="flex items-center gap-4">
-                <span className="flex items-center gap-1">
-                  <Users className="h-4 w-4" />
-                  {session.session_participants?.[0]?.count || 0}/5 participants
-                </span>
                 <span className="flex items-center gap-1">
                   <Calendar className="h-4 w-4" />
                   {new Date(session.created_at).toLocaleDateString()}
