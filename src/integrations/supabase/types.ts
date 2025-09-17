@@ -156,6 +156,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      user_in_session: {
+        Args: { _session_id: string; _user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       session_status: "active" | "completed" | "cancelled"
